@@ -43,43 +43,66 @@ class Game {
 
     addEvents() {
         window.addEventListener("keydown", (e) => {
-            if (this.container.classList.contains("active") && this.select.value == 0) {
-                return;
-            }
+            this.checkMove(e);
+        })
 
-            if (!this.firstMove && (e.key === "ArrowRight" || e.key === "ArrowLeft" || e.key === "ArrowUp")) {
-                if (this.container.classList.contains("active")) {
-                    this.container.classList.toggle("active");
-                }
+        document.getElementById("arrowLeft").addEventListener("click", (e) => {
+            e.key = "ArrowLeft";
+            this.checkMove(e);
+        })
 
-                this.timer = this.select.value;
-                if (this.timer < 10 || this.timer > 120) {
-                    return;
-                }
+        document.getElementById("arrowLeft").addEventListener("click", (e) => {
+            e.key = "ArrowLeft";
+            this.checkMove(e);
+        })
 
-                this.select.disabled = true;
-                this.firstMove = true;
-                if (this.bgSound === undefined) {
-                    this.bgSound = new Audio("./sound/mario theme.mp3");
-                    this.bgSound.loop = true;
-                    this.bgSound.play();
-                }
+        document.getElementById("arrowRight").addEventListener("click", (e) => {
+            e.key = "ArrowRight";
+            this.checkMove(e);
+        })
 
-                this.setTimer();
-            }
-
-
-            if (!this.character.move(e)) {
-                this.container.classList.toggle("collapsing");
-                setTimeout(() => {
-                    this.container.classList.toggle("collapsing");
-                }, 200);
-            }
+        document.getElementById("arrowUp").addEventListener("click", (e) => {
+            e.key = "ArrowUp";
+            this.checkMove(e);
         })
 
         this.checkCollision();
     }
 
+    checkMove(e) {
+        if (this.container.classList.contains("active") && this.select.value == 0) {
+            return;
+        }
+
+        if (!this.firstMove && (e.key === "ArrowRight" || e.key === "ArrowLeft" || e.key === "ArrowUp")) {
+            if (this.container.classList.contains("active")) {
+                this.container.classList.toggle("active");
+            }
+
+            this.timer = this.select.value;
+            if (this.timer < 10 || this.timer > 120) {
+                return;
+            }
+
+            this.select.disabled = true;
+            this.firstMove = true;
+            if (this.bgSound === undefined) {
+                this.bgSound = new Audio("./sound/mario theme.mp3");
+                this.bgSound.loop = true;
+                this.bgSound.play();
+            }
+
+            this.setTimer();
+        }
+
+
+        if (!this.character.move(e)) {
+            this.container.classList.toggle("collapsing");
+            setTimeout(() => {
+                this.container.classList.toggle("collapsing");
+            }, 200);
+        }
+    }
     setTimer() {
         let timerElement = document.getElementById("timer");
         timerElement.innerHTML = `Timer: ${this.timer}`;
